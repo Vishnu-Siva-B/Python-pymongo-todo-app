@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mongodb - TODO App</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/index.css')}}">
+</head>
+
+<body>
+    <div class="continer">
+        <form action="" method="post" class="form">
+            <h1>MongoDb TODO App</h1>
+            <input class='textbox' type="text" name="todo" placeholder="Add TODO ... " required><br><br><br><br>
+            <div class="deg">
+                <input type="radio" name="degree" value='important' id="1" required>
+                <label for="1"><b>Important</b></label><br><br><br>
+
+                <input type="radio" name="degree" value='unimportant' id="2"required>
+                <label for="2"><b>Unimportant</b></label><br><br><br>
+            </div>
+                <input type="submit" value="Add">
+
+        </form>
+    </div>
+    <ul>
+        {% for todo in all_todos %}
+        <div style="margin-left: 35vw;">
+            <span>{{ todo.todo }} - {{ todo.degree }}</span>
+            <a href="{{url_for('delete', name = todo['todo'])}}">delete</a>
+        </div><br>  
+        {% endfor %}
+    </ul>
+</body>
+
+</html>

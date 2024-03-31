@@ -1,0 +1,31 @@
+.form{
+    border:10px solid black;
+    height:20rem;
+    width:30rem;
+    margin-left: 35vw;
+    background-color:chocolate;
+}
+
+.form h1{
+    text-align:center;
+    text-decoration: underline;
+}
+
+.form .textbox{
+    position: absolute;
+    top: 7rem;
+    margin:0px 4rem 0px;
+    width:20rem;
+    height: 1.3rem;
+}
+
+.deg{
+    margin-left: 50px;
+}
+
+input[type='submit']{
+    width: 100px;
+    height: 30px;
+    margin-left:150px;
+
+}
