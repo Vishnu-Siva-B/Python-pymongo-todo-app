@@ -1,3 +1,4 @@
+# Flask App
 from flask import Flask, render_template, redirect, url_for, request
 from pymongo import MongoClient
 
@@ -18,11 +19,19 @@ def index():
     all_todos = list(todos.find())
     return render_template("index.html", all_todos=all_todos)
 
-@app.route("/del/<name>",methods=['GET', 'POST'])
+@app.route("/del/<name>", methods=['GET', 'POST'])
 def delete(name):
-    todos.delete_one({"todo":name})
+    todos.delete_one({"todo": name})
     return redirect(url_for("index"))
 
+@app.route("/update/<name>", methods=['GET', 'POST'])
+def update(name):
+    if request.method == 'POST':
+        new_todo = request.form['todo']
+        new_degree = request.form['degree']
+        todos.update_one({"todo": name}, {"$set": {"todo": new_todo, "degree": new_degree}})
+        return redirect(url_for("index"))
 
+# Run the app
 if __name__ == "__main__":
-    app.run(debug=1)
+    app.run(debug=True)

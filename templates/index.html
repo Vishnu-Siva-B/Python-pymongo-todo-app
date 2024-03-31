@@ -1,3 +1,4 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,33 +6,125 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mongodb - TODO App</title>
-    <link rel="stylesheet" href="{{url_for('static', filename='css/index.css')}}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Custom CSS */
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-control {
+            border-color: #ced4da;
+        }
+
+        .form-check-input:checked {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+
+        .todo-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+    </style>
 </head>
 
 <body>
-    <div class="continer">
-        <form action="" method="post" class="form">
-            <h1>MongoDb TODO App</h1>
-            <input class='textbox' type="text" name="todo" placeholder="Add TODO ... " required><br><br><br><br>
-            <div class="deg">
-                <input type="radio" name="degree" value='important' id="1" required>
-                <label for="1"><b>Important</b></label><br><br><br>
-
-                <input type="radio" name="degree" value='unimportant' id="2"required>
-                <label for="2"><b>Unimportant</b></label><br><br><br>
+    <div class="container mt-5 mb-5">
+        <form action="" method="post" class="form p-4">
+            <h1 class="text-center mb-4">MongoDB Todo App</h1>
+            <div class="form-group">
+                <input class='form-control' type="text" name="todo" placeholder="Add TODO ..." required>
             </div>
-                <input type="submit" value="Add">
-
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="degree" value='important' id="1" required>
+                <label class="form-check-label" for="1">Important</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="degree" value='unimportant' id="2" required>
+                <label class="form-check-label" for="2">Unimportant</label>
+            </div>
+            <button type="submit" class="btn btn-outline-primary">Add</button>
         </form>
+
+        <ul class="mt-4">
+            {% for todo in all_todos %}
+            <div class="todo-item d-flex justify-content-between align-items-center">
+                <li>{{ todo.todo }} - {{ todo.degree }}</li>
+                <div class="btn-group" role="group">
+                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editModal{{ loop.index }}">Edit</button>
+                <a href="{{url_for('delete', name = todo['todo'])}}" class="btn btn-danger">Delete</a>
+                </div>
+            </div>
+
+            <!-- Edit Modal -->
+            <div class="modal fade" id="editModal{{ loop.index }}" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editModalLabel">Edit Todo</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="{{ url_for('update', name=todo['todo']) }}" method="post">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="todo" value="{{ todo.todo }}" required>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="degree" value="important" id="important{{ loop.index }}" {% if todo.degree == 'important' %} checked {% endif %}>
+                                    <label class="form-check-label" for="important{{ loop.index }}">Important</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="degree" value="unimportant" id="unimportant{{ loop.index }}" {% if todo.degree == 'unimportant' %} checked {% endif %}>
+                                    <label class="form-check-label" for="unimportant{{ loop.index }}">Unimportant</label>
+                                </div>
+                                <button type="submit" class="btn btn-primary mt-3">Save changes</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Edit Modal -->
+            {% endfor %}
+        </ul>
     </div>
-    <ul>
-        {% for todo in all_todos %}
-        <div style="margin-left: 35vw;">
-            <span>{{ todo.todo }} - {{ todo.degree }}</span>
-            <a href="{{url_for('delete', name = todo['todo'])}}">delete</a>
-        </div><br>  
-        {% endfor %}
-    </ul>
+
+    <!-- Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 
 </html>
