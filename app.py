@@ -3,9 +3,9 @@ from flask import Flask, render_template, redirect, url_for, request
 from pymongo import MongoClient
 
 app = Flask(__name__)
-uri = "mongodb+srv://Vishnusiva:vishnusiva@cluster0.fcphozc.mongodb.net/?retryWrites=true&w=majority"
+uri = "mongodb+srv://vs21official:vs21official@debug-purpose.wq8yxno.mongodb.net/"
 client = MongoClient(uri)
-db = client["flask_database"]
+db = client["pymongo_todo_db_V1"]
 todos = db["todos"]
 
 @app.route("/", methods=['GET', 'POST'])
